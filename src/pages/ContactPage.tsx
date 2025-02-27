@@ -73,12 +73,12 @@ const ContactPage = () => {
               
               <div className="flex items-center mb-4">
                 <Phone className="h-5 w-5 text-prescripto-blue mr-3" />
-                <p className="text-gray-600">Tel: (415) 555-0132</p>
+                <p className="text-gray-600">Tel: +919508904653</p>
               </div>
               
               <div className="flex items-center mb-8">
                 <Mail className="h-5 w-5 text-prescripto-blue mr-3" />
-                <p className="text-gray-600">Email: contact@prescripto.com</p>
+                <p className="text-gray-600">Email: Mohdnasique@gmail.com</p>
               </div>
               
               <h2 className="text-2xl font-bold text-gray-800 mb-6">CAREERS AT PRESCRIPTO</h2>
