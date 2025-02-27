@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Stethoscope } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -18,11 +18,18 @@ const Hero = () => {
             </p>
             
             <div className="flex items-center">
-              <img 
-                src="lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
-                alt="Patient Avatars" 
-                className="w-24 mr-4 rounded-full border-2 border-white"
-              />
+              <div className="flex items-center mr-4">
+                <img 
+                  src="lovable-uploads/44e5dbba-a741-4ca5-93c7-a999f8b3def8.png" 
+                  alt="Doctor Avatar" 
+                  className="w-12 h-12 mr-2"
+                />
+                <img 
+                  src="lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
+                  alt="Patient Avatars" 
+                  className="w-24 rounded-full border-2 border-white"
+                />
+              </div>
               <Link to="/appointments">
                 <Button 
                   className="bg-white text-prescripto-blue hover:bg-gray-100 button-hover"
