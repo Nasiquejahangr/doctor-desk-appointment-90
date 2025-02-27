@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import SpecialtiesSection from "@/components/SpecialtiesSection";
 import DoctorCard from "@/components/DoctorCard";
 import { ArrowRight } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const doctorsData = [
   {
@@ -57,6 +58,17 @@ const Index = () => {
             <div>
               <h2 className="text-3xl font-bold text-gray-800">Featured Doctors</h2>
               <p className="text-gray-600 mt-2">Top rated doctors available for consultation</p>
+              <div className="flex mt-3">
+                {doctorsData.slice(0, 3).map((doctor, index) => (
+                  <Avatar key={doctor.id} className={`w-8 h-8 border-2 border-white ${index !== 0 ? '-ml-3' : ''}`}>
+                    <AvatarImage src={doctor.image} alt={`Dr. ${doctor.name}`} />
+                    <AvatarFallback>{doctor.name.substr(0, 2)}</AvatarFallback>
+                  </Avatar>
+                ))}
+                <span className="ml-3 text-sm text-gray-600 flex items-center">
+                  And {doctorsData.length - 3} more trusted doctors
+                </span>
+              </div>
             </div>
             
             <Link to="/doctors">

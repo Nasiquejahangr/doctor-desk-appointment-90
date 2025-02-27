@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Shield, MapPin, Calendar } from "lucide-react";
 import AppointmentForm from "@/components/AppointmentForm";
 import DoctorCard from "@/components/DoctorCard";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Sample data - would come from API in real application
 const doctorsData = [
@@ -16,7 +17,7 @@ const doctorsData = [
     experience: "8 Years",
     education: "MBBS",
     about: "Dr. James has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. He believes in building long-term relationships with patients and providing personalized care.",
-    address: "123 Medical Plaza, Suite 456, New York, NY 10001",
+    address: "Chandigarh Group of Colleges (CGC), Landran, Mohali, Punjab, India",
     fee: "$100",
   },
   {
@@ -28,7 +29,7 @@ const doctorsData = [
     experience: "12 Years",
     education: "MD, Gynecology",
     about: "Dr. Chen specializes in women's health with a focus on preventive care, reproductive health, and gynecological surgeries. She is known for her compassionate approach and thorough consultations.",
-    address: "456 Women's Health Center, Suite 200, New York, NY 10002",
+    address: "Chandigarh Group of Colleges (CGC), Landran, Mohali, Punjab, India",
     fee: "$150",
   },
   {
@@ -40,7 +41,7 @@ const doctorsData = [
     experience: "10 Years",
     education: "MD, Dermatology",
     about: "Dr. Rodriguez is a board-certified dermatologist with expertise in treating a wide range of skin conditions. He offers both medical and cosmetic dermatology services.",
-    address: "789 Skin Care Center, Floor 3, New York, NY 10003",
+    address: "Chandigarh Group of Colleges (CGC), Landran, Mohali, Punjab, India",
     fee: "$120",
   },
   {
@@ -52,7 +53,7 @@ const doctorsData = [
     experience: "15 Years",
     education: "MD, Pediatrics",
     about: "Dr. Johnson is a compassionate pediatrician dedicated to providing comprehensive care for children of all ages. She believes in partnering with parents to promote their child's physical and emotional wellbeing.",
-    address: "101 Children's Clinic, Suite 300, New York, NY 10004",
+    address: "Chandigarh Group of Colleges (CGC), Landran, Mohali, Punjab, India",
     fee: "$90",
   },
 ];
@@ -133,6 +134,9 @@ const DoctorDetail = () => {
                     <span className="bg-gray-100 px-3 py-1 rounded">
                       {doctor.experience}
                     </span>
+                    <span className="bg-gray-100 px-3 py-1 rounded ml-2">
+                      {doctor.education}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -157,7 +161,7 @@ const DoctorDetail = () => {
               </div>
               
               {/* Appointment Booking Form */}
-              <AppointmentForm doctorId={doctor.id} doctorName={doctor.name} />
+              <AppointmentForm doctorId={doctor.id} doctorName={doctor.name} doctorImage={doctor.image} />
             </div>
           </div>
         </div>
