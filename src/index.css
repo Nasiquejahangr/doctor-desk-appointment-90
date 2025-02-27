@@ -118,7 +118,7 @@
 
 /* Specialty Icons */
 .specialty-icon {
-  @apply flex items-center justify-center w-20 h-20 rounded-full bg-prescripto-lightest-blue p-5;
+  @apply flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-prescripto-lightest-blue to-white shadow-sm p-5;
 }
 
 /* Custom animations */

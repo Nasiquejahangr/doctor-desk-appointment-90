@@ -1,24 +1,22 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SpecialtyCard from "./SpecialtyCard";
 
 const SpecialtiesSection = () => {
   const [isInView, setIsInView] = useState(false);
   
-  // Simple intersection observer to trigger animations
-  const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        setIsInView(true);
-      }
-    });
-  };
-  
-  // Set up the intersection observer on component mount
-  useState(() => {
-    const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0.1
-    });
+  // Improved intersection observer to trigger animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
     
     const element = document.getElementById('specialties-section');
     if (element) observer.observe(element);
@@ -26,7 +24,7 @@ const SpecialtiesSection = () => {
     return () => {
       if (element) observer.unobserve(element);
     };
-  });
+  }, []);
   
   const specialties = [
     { 
@@ -99,11 +97,18 @@ const SpecialtiesSection = () => {
   ];
   
   return (
-    <section id="specialties-section" className="py-16 bg-gray-50">
-      <div className="prescripto-container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Find by Speciality</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+    <section id="specialties-section" className="py-20 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-prescripto-lightest-blue rounded-full -translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-prescripto-lightest-blue rounded-full translate-x-1/3 translate-y-1/3 opacity-30"></div>
+      
+      <div className="prescripto-container relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 relative inline-block">
+            Find by Speciality
+            <span className="absolute bottom-0 left-0 w-full h-1 bg-prescripto-blue opacity-70 rounded"></span>
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mt-4">
             Simply browse through our extensive list of trusted doctors, schedule 
             your appointment hassle-free.
           </p>
@@ -113,8 +118,13 @@ const SpecialtiesSection = () => {
           {specialties.map((specialty, index) => (
             <div 
               key={specialty.id} 
-              className={`${isInView ? 'animate-slide-up' : 'opacity-0'}`}
-              style={{ animationDelay: `${index * 100}ms` }}
+              className={`transform ${isInView ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-8'}`}
+              style={{ 
+                transitionDelay: `${index * 100}ms`,
+                transitionDuration: '600ms',
+                transitionProperty: 'all',
+                transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
             >
               <SpecialtyCard
                 title={specialty.title}
