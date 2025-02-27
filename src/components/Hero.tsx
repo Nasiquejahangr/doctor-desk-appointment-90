@@ -19,7 +19,7 @@ const Hero = () => {
             
             <div className="flex items-center">
               <img 
-                src="/public/lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
+                src="lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
                 alt="Patient Avatars" 
                 className="w-24 mr-4 rounded-full border-2 border-white"
               />
@@ -35,7 +35,7 @@ const Hero = () => {
           
           <div className="hidden md:block relative z-10 animate-slide-in-right">
             <img 
-              src="/public/lovable-uploads/631913a5-9f66-4880-9217-bc731ff91c36.png" 
+              src="lovable-uploads/631913a5-9f66-4880-9217-bc731ff91c36.png" 
               alt="Doctors Team" 
               className="w-full max-w-md ml-auto rounded-lg"
             />

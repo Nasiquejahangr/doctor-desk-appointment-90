@@ -93,7 +93,7 @@ const ContactPage = () => {
               {/* Map or Image Placeholder - Updated with higher quality image of CGC Mohali */}
               <div className="mt-12 rounded-lg overflow-hidden shadow-md">
                 <img 
-                  src="/public/lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
+                  src="lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
                   alt="CGC Mohali Campus" 
                   className="w-full h-auto"
                 />

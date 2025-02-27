@@ -24,7 +24,7 @@ const AboutPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in animate-stagger-1">
               <img 
-                src="/public/lovable-uploads/631913a5-9f66-4880-9217-bc731ff91c36.png" 
+                src="lovable-uploads/631913a5-9f66-4880-9217-bc731ff91c36.png" 
                 alt="Medical Team at CGC Mohali" 
                 className="rounded-lg shadow-md w-full"
               />
@@ -101,7 +101,7 @@ const AboutPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in animate-stagger-1">
               <img 
-                src="/public/lovable-uploads/3a6d6e46-850e-4789-997e-86e3a1da97b2.png" 
+                src="lovable-uploads/3a6d6e46-850e-4789-997e-86e3a1da97b2.png" 
                 alt="Dr. Richard James" 
                 className="w-full h-56 object-cover"
               />
@@ -113,7 +113,7 @@ const AboutPage = () => {
             
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in animate-stagger-2">
               <img 
-                src="/public/lovable-uploads/abb005d8-2aac-4930-8f19-1970d2d10708.png" 
+                src="lovable-uploads/abb005d8-2aac-4930-8f19-1970d2d10708.png" 
                 alt="Dr. Sarah Chen" 
                 className="w-full h-56 object-cover"
               />
@@ -125,7 +125,7 @@ const AboutPage = () => {
             
             <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in animate-stagger-3">
               <img 
-                src="/public/lovable-uploads/6916c512-1348-4b9d-a5fc-97052b6636bb.png" 
+                src="lovable-uploads/6916c512-1348-4b9d-a5fc-97052b6636bb.png" 
                 alt="Dr. Emily Johnson" 
                 className="w-full h-56 object-cover"
               />
