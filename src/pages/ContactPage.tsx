@@ -66,8 +66,8 @@ const ContactPage = () => {
               
               <div className="mb-8">
                 <address className="not-italic">
-                  <p className="text-gray-600 mb-1">54709 Willms Station</p>
-                  <p className="text-gray-600">Suite 350, Washington, USA</p>
+                  <p className="text-gray-600 mb-1">Chandigarh Group of Colleges (CGC)</p>
+                  <p className="text-gray-600">Landran, Mohali, Punjab, India</p>
                 </address>
               </div>
               
@@ -90,11 +90,11 @@ const ContactPage = () => {
                 Explore Jobs
               </Button>
               
-              {/* Map or Image Placeholder */}
+              {/* Map or Image Placeholder - Updated with higher quality image of CGC Mohali */}
               <div className="mt-12 rounded-lg overflow-hidden shadow-md">
                 <img 
-                  src="/public/lovable-uploads/c503748d-1786-4149-b840-65b8f675481c.png" 
-                  alt="Office Location" 
+                  src="/public/lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
+                  alt="CGC Mohali Campus" 
                   className="w-full h-auto"
                 />
               </div>
