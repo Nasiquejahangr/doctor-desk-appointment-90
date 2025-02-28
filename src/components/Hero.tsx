@@ -18,11 +18,11 @@ const Hero = () => {
             </p>
             
             <div className="flex items-center">
-              <img 
+{/*               <img 
                 src="lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
                 alt="Patient Avatars" 
                 className="w-24 mr-4 rounded-full border-2 border-white"
-              />
+              /> */}
               <Link to="/appointments">
                 <Button 
                   className="bg-white text-prescripto-blue hover:bg-gray-100 button-hover"
