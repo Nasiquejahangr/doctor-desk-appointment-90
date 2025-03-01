@@ -1,19 +1,20 @@
-
-import { Toaster } from "@/components/ui/toaster";
+//src/App.tsx
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
-import Index from "./pages/Index";
-import DoctorsPage from "./pages/DoctorsPage";
-import DoctorDetail from "./pages/DoctorDetail";
+import Navbar from "./components/Navbar";
 import AboutPage from "./pages/AboutPage";
+import AppointmentsPage from "./pages/AppointmentsPage"; // ✅ Import the Appointments Page
 import ContactPage from "./pages/ContactPage";
-import SignupPage from "./pages/SignupPage";
+import DoctorDetail from "./pages/DoctorDetail";
+import DoctorsPage from "./pages/DoctorsPage";
+import Index from "./pages/Index";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import SignupPage from "./pages/SignupPage";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/appointments" element={<AppointmentsPage />} />  {/* ✅ FIXED: Added Appointments Page */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
