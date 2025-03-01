@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/context/AuthContext";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -14,10 +14,10 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
-  
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast({
         title: "Please fill in all fields",
@@ -25,33 +25,36 @@ const LoginForm = () => {
       });
       return;
     }
-    
+
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      // Login user with role
-      login(email, role);
-      
-      // Successful login
+
+    try {
+      await login(email, password, role, navigate); // ✅ Pass `navigate` for redirection
+
       toast({
         title: "Login successful",
         description: `Welcome back to Prescripto! Logged in as ${role}.`,
       });
-      
-      navigate("/");
-    }, 1500);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
-  
+
   return (
     <div className="max-w-md w-full mx-auto bg-white rounded-lg shadow-sm p-8 animate-scale-in">
       <div className="text-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Login</h1>
-        <p className="text-gray-600">Please login to {role === "patient" ? "book appointments" : "manage your practice"}</p>
+        <p className="text-gray-600">
+          Please login to {role === "patient" ? "book appointments" : "manage your practice"}
+        </p>
       </div>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div className="space-y-2">
@@ -71,7 +74,7 @@ const LoginForm = () => {
               </div>
             </RadioGroup>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -83,7 +86,7 @@ const LoginForm = () => {
               className="h-12"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
@@ -95,15 +98,15 @@ const LoginForm = () => {
               className="h-12"
             />
           </div>
-          
-          <Button 
-            type="submit" 
+
+          <Button
+            type="submit"
             className="w-full h-12 bg-prescripto-blue hover:bg-prescripto-light-blue button-hover"
             disabled={isLoading}
           >
             {isLoading ? "Logging in..." : "Login"}
           </Button>
-          
+
           <p className="text-center text-sm text-gray-600 mt-4">
             Don't have an account?{" "}
             <Link to="/signup" className="text-prescripto-blue hover:underline">

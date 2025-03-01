@@ -1,3 +1,5 @@
+
+//backend/routes/appointmentRoutes.js
 const express = require("express");
 const Appointment = require("../models/Appointment");
 const User = require("../models/User");
@@ -16,15 +18,9 @@ router.post("/", async (req, res) => {
         }
 
         // Create appointment
-        const appointment = new Appointment({
-            patientId,
-            doctorId,
-            date,
-            timeSlot,
-            notes
-        });
-
+        const appointment = new Appointment({ patientId, doctorId, date, timeSlot, notes });
         await appointment.save();
+
         res.status(201).json({ message: "Appointment booked successfully", appointment });
     } catch (error) {
         console.error(error);
@@ -67,4 +63,4 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router; // ✅ Use CommonJS
