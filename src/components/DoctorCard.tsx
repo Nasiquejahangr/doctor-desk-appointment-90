@@ -1,7 +1,8 @@
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "@/components/ui/use-toast";
 
 interface DoctorCardProps {
   id: string;
@@ -12,6 +13,33 @@ interface DoctorCardProps {
 }
 
 const DoctorCard = ({ id, name, specialty, image, isAvailable = true }: DoctorCardProps) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleBookAppointment = () => {
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please login as a patient to book an appointment",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
+    if (user.role !== "patient") {
+      toast({
+        title: "Invalid Access",
+        description: "Only patients can book appointments",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Navigate to appointment booking page for this doctor
+    navigate(`/doctors/${id}/book`);
+  };
+
   return (
     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 card-hover animate-fade-in">
       <div className="bg-prescripto-lightest-blue p-4">
@@ -35,13 +63,25 @@ const DoctorCard = ({ id, name, specialty, image, isAvailable = true }: DoctorCa
         <h3 className="text-lg font-bold text-gray-800">Dr. {name}</h3>
         <p className="text-gray-600 mb-4">{specialty}</p>
         
-        <Link to={`/doctors/${id}`}>
-          <Button 
-            className="w-full bg-prescripto-blue hover:bg-prescripto-light-blue button-hover"
-          >
-            View Profile
-          </Button>
-        </Link>
+        <div className="space-y-2">
+          <Link to={`/doctors/${id}`} className="block">
+            <Button 
+              variant="outline"
+              className="w-full border-prescripto-blue text-prescripto-blue hover:bg-prescripto-blue hover:text-white"
+            >
+              View Profile
+            </Button>
+          </Link>
+          
+          {isAvailable && (
+            <Button 
+              onClick={handleBookAppointment}
+              className="w-full bg-prescripto-blue hover:bg-prescripto-light-blue button-hover"
+            >
+              Book Appointment
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

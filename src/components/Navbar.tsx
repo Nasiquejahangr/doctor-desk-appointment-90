@@ -1,11 +1,12 @@
-//src/components/Navbar.tsx
-import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
+import { Menu, X, User } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext"; // ✅ Ensured this is included
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
   
   return (
     <nav className="w-full bg-white py-3 shadow-sm">
@@ -29,7 +30,7 @@ const Navbar = () => {
             ALL DOCTORS
           </Link>
           <Link to="/appointments" className="text-gray-700 hover:text-prescripto-blue transition-colors font-medium">
-            APPOINTMENTS  {/* ✅ FIXED: Added "Appointments" link */}
+            APPOINTMENTS {/* ✅ Ensured this link is included */}
           </Link>
           <Link to="/about" className="text-gray-700 hover:text-prescripto-blue transition-colors font-medium">
             ABOUT
@@ -39,12 +40,45 @@ const Navbar = () => {
           </Link>
         </div>
         
-        <div className="hidden md:block">
-          <Link to="/signup">
-            <Button className="bg-prescripto-blue hover:bg-prescripto-light-blue button-hover">
-              Create account
-            </Button>
-          </Link>
+        <div className="hidden md:flex items-center space-x-4">
+          {user ? (
+            <>
+              <div className="flex items-center space-x-2">
+                <User size={20} className="text-gray-600" />
+                <span className="text-sm text-gray-600">{user.email}</span>
+                <span className={`px-2 py-1 rounded text-xs ${
+                  user.profileStatus === 'active' 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {user.profileStatus}
+                </span>
+                <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800 capitalize">
+                  {user.role}
+                </span>
+              </div>
+              <Button 
+                variant="outline"
+                onClick={logout}
+                className="border-prescripto-blue text-prescripto-blue hover:bg-prescripto-blue hover:text-white"
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="outline" className="border-prescripto-blue text-prescripto-blue hover:bg-prescripto-blue hover:text-white">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="bg-prescripto-blue hover:bg-prescripto-light-blue button-hover">
+                  Create account
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
         
         {/* Mobile menu button */}
@@ -75,7 +109,7 @@ const Navbar = () => {
             <Link to="/appointments" className="text-gray-700 hover:text-prescripto-blue transition-colors font-medium py-2"
               onClick={() => setIsMenuOpen(false)}
             >
-              APPOINTMENTS  {/* ✅ FIXED: Added "Appointments" link */}
+              APPOINTMENTS {/* ✅ Ensured this link is included */}
             </Link>
             <Link to="/about" className="text-gray-700 hover:text-prescripto-blue transition-colors font-medium py-2"
               onClick={() => setIsMenuOpen(false)}
@@ -87,11 +121,56 @@ const Navbar = () => {
             >
               CONTACT
             </Link>
-            <Link to="/signup" className="inline-block" onClick={() => setIsMenuOpen(false)}>
-              <Button className="w-full bg-prescripto-blue hover:bg-prescripto-light-blue">
-                Create account
-              </Button>
-            </Link>
+
+            {user ? (
+              <>
+                <div className="flex items-center space-x-2 py-2">
+                  <User size={20} className="text-gray-600" />
+                  <span className="text-sm text-gray-600">{user.email}</span>
+                  <span className={`px-2 py-1 rounded text-xs ${
+                    user.profileStatus === 'active' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {user.profileStatus}
+                  </span>
+                  <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800 capitalize">
+                    {user.role}
+                  </span>
+                </div>
+                <Button 
+                  variant="outline"
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full border-prescripto-blue text-prescripto-blue hover:bg-prescripto-blue hover:text-white"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link 
+                  to="/login" 
+                  className="inline-block"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Button variant="outline" className="w-full border-prescripto-blue text-prescripto-blue hover:bg-prescripto-blue hover:text-white">
+                    Login
+                  </Button>
+                </Link>
+                <Link 
+                  to="/signup" 
+                  className="inline-block"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Button className="w-full bg-prescripto-blue hover:bg-prescripto-light-blue">
+                    Create account
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

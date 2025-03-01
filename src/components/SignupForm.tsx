@@ -1,23 +1,25 @@
-//src/components/SignupForm.tsx
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAuth } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("patient"); // Default role is "patient"
+  const [role, setRole] = useState<"patient" | "doctor">("patient");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!fullName || !email || !password || !role) {
+    if (!fullName || !email || !password) {
       toast({
         title: "Please fill in all fields",
         variant: "destructive",
@@ -30,28 +32,19 @@ const SignupForm = () => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: fullName,
-          email: email,
-          password: password,
-          role: role, // Send selected role
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: fullName, email, password, role }),
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Registration failed");
-      }
+      if (!response.ok) throw new Error(data.error || "Registration failed");
 
       toast({
         title: "Account created successfully",
-        description: `Welcome ${role}! You can now access the platform.`,
+        description: `Welcome, ${role}!`,
       });
 
+      login(email, role);
       navigate("/login");
     } catch (error: any) {
       toast({
@@ -68,20 +61,37 @@ const SignupForm = () => {
     <div className="max-w-md w-full mx-auto bg-white rounded-lg shadow-sm p-8 animate-scale-in">
       <div className="text-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Create Account</h1>
-        <p className="text-gray-600">Please sign up to book or manage appointments</p>
+        <p className="text-gray-600">
+          Sign up to {role === "patient" ? "book appointments" : "manage your practice"}
+        </p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div className="space-y-2">
+            <Label>I am a</Label>
+            <RadioGroup value={role} onValueChange={(value) => setRole(value as "patient" | "doctor")}>
+              <div className="flex space-x-4">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="patient" id="patient" />
+                  <Label htmlFor="patient">Patient</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="doctor" id="doctor" />
+                  <Label htmlFor="doctor">Doctor</Label>
+                </div>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
             <Input
               id="fullName"
               type="text"
-              placeholder="John Doe"
+              placeholder={role === "patient" ? "John Doe" : "Dr. John Doe"}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="h-12"
             />
           </div>
 
@@ -93,7 +103,6 @@ const SignupForm = () => {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12"
             />
           </div>
 
@@ -105,29 +114,10 @@ const SignupForm = () => {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-12"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="role">Register As</Label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="h-12 border rounded-lg px-3"
-            >
-              <option value="patient">Patient</option>
-              <option value="doctor">Doctor</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
-          <Button 
-            type="submit" 
-            className="w-full h-12 bg-prescripto-blue hover:bg-prescripto-light-blue button-hover"
-            disabled={isLoading}
-          >
+          <Button type="submit" className="w-full bg-prescripto-blue hover:bg-prescripto-light-blue" disabled={isLoading}>
             {isLoading ? "Creating account..." : "Create account"}
           </Button>
 
