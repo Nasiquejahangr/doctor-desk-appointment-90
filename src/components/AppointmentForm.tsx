@@ -1,5 +1,5 @@
-
-import { useState } from "react";
+//src/components/AppointmentForm.tsx
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Label } from "@/components/ui/label";
@@ -7,10 +7,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { useState } from "react";
 
 interface AppointmentFormProps {
   doctorId: string;
@@ -34,10 +34,10 @@ const AppointmentForm = ({ doctorId, doctorName, doctorImage }: AppointmentFormP
   const [timeSlot, setTimeSlot] = useState<string>("");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!date || !timeSlot) {
       toast({
         title: "Please select a date and time",
@@ -46,26 +46,56 @@ const AppointmentForm = ({ doctorId, doctorName, doctorImage }: AppointmentFormP
       });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
-    // Simulate API call to book appointment
-    setTimeout(() => {
-      setIsSubmitting(false);
-      
-      // Success message
+
+    try {
+      const patientId = localStorage.getItem("userId"); // Get logged-in user ID
+
+      if (!patientId) {
+        throw new Error("User is not logged in. Please log in to book an appointment.");
+      }
+
+      const response = await fetch("http://localhost:5000/api/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patientId,
+          doctorId,
+          date,
+          timeSlot,
+          notes,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to book appointment");
+      }
+
       toast({
         title: "Appointment Booked!",
         description: `Your appointment with Dr. ${doctorName} on ${format(date, "PPP")} at ${timeSlot} has been confirmed.`,
       });
-      
+
       // Reset form
       setDate(undefined);
       setTimeSlot("");
       setNotes("");
-    }, 1500);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  
+
   return (
     <div className="border-t border-gray-100 pt-6 mt-6">
       <div className="flex items-center mb-6">
@@ -77,7 +107,7 @@ const AppointmentForm = ({ doctorId, doctorName, doctorImage }: AppointmentFormP
         )}
         <h3 className="text-xl font-semibold text-gray-800">Book Appointment with Dr. {doctorName}</h3>
       </div>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Date Picker */}
@@ -110,7 +140,7 @@ const AppointmentForm = ({ doctorId, doctorName, doctorImage }: AppointmentFormP
               </PopoverContent>
             </Popover>
           </div>
-          
+
           {/* Time Slot Picker */}
           <div className="space-y-2">
             <Label htmlFor="time">Select Time</Label>
@@ -128,7 +158,7 @@ const AppointmentForm = ({ doctorId, doctorName, doctorImage }: AppointmentFormP
             </Select>
           </div>
         </div>
-        
+
         {/* Notes */}
         <div className="space-y-2 mb-6">
           <Label htmlFor="notes">Additional Notes (Optional)</Label>
@@ -140,7 +170,7 @@ const AppointmentForm = ({ doctorId, doctorName, doctorImage }: AppointmentFormP
             rows={3}
           />
         </div>
-        
+
         <Button
           type="submit"
           className="w-full bg-prescripto-blue hover:bg-prescripto-light-blue button-hover h-12"
