@@ -1,9 +1,36 @@
-
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "@/components/ui/use-toast";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleBookAppointment = () => {
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "Please login as a patient to book an appointment",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
+    if (user.role !== "patient") {
+      toast({
+        title: "Invalid Access",
+        description: "Only patients can book appointments",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    navigate("/doctors");
+  };
+
   return (
     <section className="bg-prescripto-blue text-white overflow-hidden relative">
       <div className="prescripto-container py-16 md:py-20">
@@ -18,18 +45,12 @@ const Hero = () => {
             </p>
             
             <div className="flex items-center">
-{/*               <img 
-                src="lovable-uploads/996facef-3351-4f01-adaf-2ed9e8dce71a.png" 
-                alt="Patient Avatars" 
-                className="w-24 mr-4 rounded-full border-2 border-white"
-              /> */}
-              <Link to="/appointments">
-                <Button 
-                  className="bg-white text-prescripto-blue hover:bg-gray-100 button-hover"
-                >
-                  Book appointment <ArrowRight size={16} className="ml-2" />
-                </Button>
-              </Link>
+              <Button 
+                onClick={handleBookAppointment}
+                className="bg-white text-prescripto-blue hover:bg-gray-100 button-hover"
+              >
+                Book appointment <ArrowRight size={16} className="ml-2" />
+              </Button>
             </div>
           </div>
           
